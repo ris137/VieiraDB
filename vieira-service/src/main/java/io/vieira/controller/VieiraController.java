@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 public class VieiraController {
 
     @Autowired
@@ -19,8 +19,8 @@ public class VieiraController {
         vieiraService.put(request.getKey(), request.getValue());
     }
 
-    @GetMapping("/get")
-    public Object get(Object key) {
+    @GetMapping("/get/{key}")
+    public Object get(@PathVariable String key) {
         return vieiraService.get(key);
     }
 

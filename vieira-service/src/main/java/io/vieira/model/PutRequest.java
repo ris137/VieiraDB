@@ -1,15 +1,15 @@
 package io.vieira.model;
 
 public class PutRequest {
-    private final Object key;
+    private final String key;
     private final Object value;
 
-    public PutRequest(Object key, Object value) {
+    public PutRequest(String key, Object value) {
         this.key = key;
         this.value = value;
     }
 
-    public Object getKey() {
+    public String getKey() {
         return key;
     }
 

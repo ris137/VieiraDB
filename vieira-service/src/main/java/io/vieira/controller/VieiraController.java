@@ -24,8 +24,8 @@ public class VieiraController {
         return vieiraService.get(key);
     }
 
-    @DeleteMapping("/remove")
-    public void remove(Object key) {
+    @DeleteMapping("/remove/{key}")
+    public void remove(@PathVariable String key) {
         vieiraService.remove(key);
     }
 }

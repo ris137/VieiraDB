@@ -1,4 +1,5 @@
 rootProject.name = 'VieiraDB'
-include 'vieira-app'
 include 'vieira-service'
+include 'vieira-app'
+include 'vieira-benchmarks'
 

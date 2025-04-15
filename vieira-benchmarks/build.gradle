@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':vieira-service')
+    implementation 'org.openjdk.jmh:jmh-core:1.37'
+    implementation 'org.openjdk.jmh:jmh-generator-annprocess:1.37'
+    annotationProcessor 'org.openjdk.jmh:jmh-generator-annprocess:1.37'
+}
+
+tasks.register('jmh', JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'org.openjdk.jmh.Main'
+    
+    // Default JMH arguments
+    def defaultArgs = ['-f', '1', '-wi', '5', '-i', '5', '-t', '1']
+    
+    // Allow passing additional JMH arguments via command line
+    if (project.hasProperty('jmhArgs')) {
+        args(project.jmhArgs.split('\\s+'))
+    } else {
+        args(defaultArgs)
+    }
+} 

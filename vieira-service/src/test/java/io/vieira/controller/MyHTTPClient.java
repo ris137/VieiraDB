@@ -1,11 +1,8 @@
 package io.vieira.controller;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vieira.model.PutRequest;
-
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -20,11 +17,12 @@ public class MyHTTPClient {
         String requestBody = objectMapper.writeValueAsString(putRequest);
 
         // Build the HTTP POST request
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("%s/%s".formatted(BASE_URL, "update")))
-                .header("Content-Type", "application/json") // Set content type to JSON
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody)) // Attach JSON body
-                .build();
+        HttpRequest request =
+                HttpRequest.newBuilder()
+                        .uri(URI.create("%s/%s".formatted(BASE_URL, "update")))
+                        .header("Content-Type", "application/json") // Set content type to JSON
+                        .POST(HttpRequest.BodyPublishers.ofString(requestBody)) // Attach JSON body
+                        .build();
 
         // Send the request and get the response
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -35,12 +33,12 @@ public class MyHTTPClient {
     }
 
     public Object get(String key) throws Exception {
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("%s/%s/%s".formatted(BASE_URL, "get", key)))
-                .GET().build();
-        HttpResponse<String> response = client.send(
-                request,
-                HttpResponse.BodyHandlers.ofString()
-        );
+        HttpRequest request =
+                HttpRequest.newBuilder()
+                        .uri(URI.create("%s/%s/%s".formatted(BASE_URL, "get", key)))
+                        .GET()
+                        .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() == 200) {
             try {

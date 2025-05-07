@@ -5,7 +5,6 @@ public class PutResponse {
     private Object valueBefore;
     private Object valueAfter;
 
-
     public PutResponse(Object key, Object valueBefore, Object valueAfter) {
         this.key = key;
         this.valueBefore = valueBefore;

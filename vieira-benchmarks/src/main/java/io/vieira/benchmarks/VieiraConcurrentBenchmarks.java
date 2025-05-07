@@ -1,12 +1,10 @@
 package io.vieira.benchmarks;
 
+import io.vieira.service.VieiraService;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
-import java.util.concurrent.TimeUnit;
-import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-import io.vieira.service.VieiraService;
 
 @State(Scope.Benchmark)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
@@ -14,19 +12,19 @@ import io.vieira.service.VieiraService;
 @Measurement(iterations = 5, time = 1)
 @Fork(1)
 public class VieiraConcurrentBenchmarks {
-    
+
     private VieiraService service;
     private Random random;
     private String[] keys;
     private static final int KEY_COUNT = 1000;
     private static final int THREAD_COUNT = 4;
-    
+
     @Setup
     public void setup() {
         service = new VieiraService();
         random = new Random();
         keys = new String[KEY_COUNT];
-        
+
         // Pre-populate with some data
         for (int i = 0; i < KEY_COUNT; i++) {
             String key = "key" + i;
@@ -35,7 +33,7 @@ public class VieiraConcurrentBenchmarks {
             service.put(key, value);
         }
     }
-    
+
     @Benchmark
     @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
     @Threads(THREAD_COUNT)
@@ -45,7 +43,7 @@ public class VieiraConcurrentBenchmarks {
         service.put(key, value);
         bh.consume(key);
     }
-    
+
     @Benchmark
     @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
     @Threads(THREAD_COUNT)
@@ -54,14 +52,14 @@ public class VieiraConcurrentBenchmarks {
         Object value = service.get(key);
         bh.consume(value);
     }
-    
+
     @Benchmark
     @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
     @Threads(THREAD_COUNT)
     public void concurrentMixedOperations(Blackhole bh) {
         int operation = random.nextInt(3);
         String key = keys[random.nextInt(KEY_COUNT)];
-        
+
         switch (operation) {
             case 0:
                 service.put(key, "value" + System.currentTimeMillis());
@@ -77,7 +75,7 @@ public class VieiraConcurrentBenchmarks {
                 break;
         }
     }
-    
+
     @Benchmark
     @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
     @Threads(THREAD_COUNT)
@@ -94,4 +92,4 @@ public class VieiraConcurrentBenchmarks {
             bh.consume(key);
         }
     }
-} 
+}
